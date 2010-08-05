@@ -15,7 +15,6 @@
 class cloudmade {
 	
 	private $layers;
-	private $api_url = "http://www.openstreetmap.org/openlayers/OpenStreetMap.js";
 	
 	/**
 	 * Registers the main event add method
@@ -31,13 +30,19 @@ class cloudmade {
 	 */
 	public function add()
 	{
-		plugin::add_javascript('cloudmade/views/js/cloudmade');
+		// Add JS for Map Settings Page
+		$api_url_all = Kohana::config('settings.api_url_all');
+		$api_url_all .= html::script(url::base().'plugins/cloudmade/views/js/cloudmade.js');
+		Kohana::config_set('settings.api_url_all', $api_url_all);
 		
 		// Add a Sub-Nav Link
 		Event::add('ushahidi_filter.map_base_layers', array($this, '_add_layer'));
 		
 		// Reconfigure the default map api
-		Kohana::config_set('settings.api_url', "<script type=\"text/javascript\" src=\"".$this->api_url."\"></script>" );
+		if (Kohana::config('settings.default_map'))
+		{
+			Kohana::config_set('settings.api_url', "<script type=\"text/javascript\" src=\"".url::base()."plugins/cloudmade/views/js/cloudmade.js\"></script>" );
+		}
 	}
 	
 	public function _add_layer()
@@ -58,7 +63,7 @@ class cloudmade {
 		$layer->openlayers = 'CloudMade';
 		$layer->title = 'CloudMade';
 		$layer->description = 'Cloudmade styled tiles';
-		$layer->api_url = $this->api_url;
+		$layer->api_url = url::base()."plugins/cloudmade/views/js/cloudmade.js";
 		$layer->data = array(
 			'key' => Kohana::config('cloudmade.api_key'),
 			'styleId' => Kohana::config('cloudmade.styleid')
