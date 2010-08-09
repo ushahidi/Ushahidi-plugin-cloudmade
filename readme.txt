@@ -2,7 +2,7 @@
 name: Cloudmade
 website: http://www.ushahidi.com
 description: Add a Cloudmade base layer
-version: 0.2
+version: 0.3
 requires: 2.0b4
 tested up to: 2.0b4
 author: David Kobia
@@ -20,6 +20,8 @@ Actionable Report Example:
 5. Activate the plugin.
 
 == Changelog ==
+0.3
+* Fixed bug with cloudmade.js rendering when plugin not active
 
 0.2
 * Finished plugin
