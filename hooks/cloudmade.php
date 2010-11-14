@@ -39,7 +39,7 @@ class cloudmade {
 		Event::add('ushahidi_filter.map_base_layers', array($this, '_add_layer'));
 		
 		// Reconfigure the default map api
-		if (Kohana::config('settings.default_map'))
+		if (Kohana::config('settings.default_map') == "cloudmade")
 		{
 			Kohana::config_set('settings.api_url', "<script type=\"text/javascript\" src=\"".url::base()."plugins/cloudmade/views/js/cloudmade.js\"></script>" );
 		}
