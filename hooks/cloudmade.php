@@ -66,7 +66,8 @@ class cloudmade {
 		$layer->api_url = url::base()."plugins/cloudmade/views/js/cloudmade.js";
 		$layer->data = array(
 			'key' => Kohana::config('cloudmade.api_key'),
-			'styleId' => Kohana::config('cloudmade.styleid')
+			'styleId' => Kohana::config('cloudmade.styleid'),
+			'transitionEffect' => 'resize'
 		);
 		$this->layers[$layer->name] = $layer;
 		
