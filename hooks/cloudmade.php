@@ -30,32 +30,37 @@ class cloudmade {
 	 */
 	public function add()
 	{
+		// 2.7+ knows how to deal with JS paths
+		if (version_compare(Kohana::config('settings.ushahidi_version'), 2.7) >= 0)
+		{
+			$api_string = "plugins/cloudmade/views/js/cloudmade.js";
+		}
+		else
+		{
+			$api_string = html::script(url::base().'plugins/cloudmade/views/js/cloudmade.js');
+		}
+
 		// Add JS for Map Settings Page
 		$api_url_all = Kohana::config('settings.api_url_all');
 		if (is_array($api_url_all))
 		{
-			$api_url_all[] = html::script(url::base().'plugins/cloudmade/views/js/cloudmade.js');
+			$api_url_all[] = $api_string;
 		}
 		else
 		{
-			$api_url_all .= html::script(url::base().'plugins/cloudmade/views/js/cloudmade.js');
+			$api_url_all .= $api_string;
 		}
+
 		Kohana::config_set('settings.api_url_all', $api_url_all);
 		
+
 		// Add a Sub-Nav Link
 		Event::add('ushahidi_filter.map_base_layers', array($this, '_add_layer'));
 		
 		// Reconfigure the default map api
 		if (Kohana::config('settings.default_map') == "cloudmade")
 		{
-			if (Kohana::config('settings.ushahidi_version') >= 2.7)
-			{
-				Kohana::config_set('settings.api_url', "plugins/cloudmade/views/js/cloudmade.js");
-			}
-			else
-			{
-				Kohana::config_set('settings.api_url', "<script type=\"text/javascript\" src=\"".url::base()."plugins/cloudmade/views/js/cloudmade.js\"></script>" );
-			}
+			Kohana::config_set('settings.api_url', $api_string);
 		}
 	}
 	
